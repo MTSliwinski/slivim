@@ -4,6 +4,8 @@ This is a standalone Neovim config that replaces `lvim/` (LunarVim). It uses
 `lazy.nvim` as the plugin manager and recreates LunarVim's default plugins/keymaps
 plus your custom additions from `lvim/config.lua` and `lvim/plugin/keymaps.lua`.
 
+**Requires Neovim 0.11+** (uses `vim.lsp.config` and current plugin APIs).
+
 ## Installing
 
 ```sh
@@ -12,19 +14,22 @@ mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null
 mv ~/.local/share/nvim ~/.local/share/nvim.bak 2>/dev/null
 
 # symlink (or copy) this folder into place
-ln -s /Users/marcinsliwinski/workspace/vim-config/nvim ~/.config/nvim
+ln -s ~/workspace/slivim/nvim ~/.config/nvim
 
 nvim
 # lazy.nvim will bootstrap itself and install all plugins on first launch
 ```
 
-After plugins install, run `:Mason` to install any LSP servers/formatters you need
-(mason-lspconfig auto-installs servers for filetypes you open, but you can also
-install manually). Add formatters/linters to `lua/plugins/null-ls.lua`.
+Plugin versions are pinned in `lazy-lock.json`; use `:Lazy restore` to match it
+exactly, or `:Lazy sync` to update (then commit the new lock file).
+
+`lua_ls`, `jsonls` and `pyright` are installed automatically by mason-lspconfig;
+run `:Mason` to add more LSP servers/formatters. Installed servers are enabled
+automatically. Add formatters/linters to `lua/plugins/null-ls.lua`.
 
 ## What was carried over from `lvim/`
 
-- Custom plugin: `hop.nvim` (`lua/plugins/hop.lua`) with the same `f F t T s` motions
+- Custom plugin: `hop.nvim` (`lua/plugins/hop.lua`, now the maintained `smoka7/hop.nvim` fork) with the same `f F t T s` motions
   and the terminal `<C-n>` exit-terminal-mode mapping (`lua/config/autocmds.lua`).
 - Custom keymaps: `| \ gt gT` (`lua/config/keymaps.lua`).
 
@@ -34,7 +39,8 @@ install manually). Add formatters/linters to `lua/plugins/null-ls.lua`.
 - `<leader>e` toggle file explorer (nvim-tree)
 - `<leader>ff/fw/fb/fh/fo` telescope find files / grep / buffers / help / recent
 - `<C-h/j/k/l>` window navigation, `<S-h>/<S-l>` buffer navigation, `<leader>c` close buffer
-- `gd gr K <leader>ca <leader>rn <leader>ld [d ]d` LSP keymaps
+- `gd gr K <leader>ca <leader>rn` LSP keymaps (buffer-local, set when a server attaches)
+- `<leader>ld [d ]d` diagnostics
 - `gcc`/`gc` comment toggle (Comment.nvim default)
 - `<C-\>` floating terminal (toggleterm)
 - `<leader>gp <leader>gb` gitsigns hunk preview/blame
@@ -47,9 +53,6 @@ install manually). Add formatters/linters to `lua/plugins/null-ls.lua`.
   browsing.
 - `null-ls.nvim` is archived upstream; replaced with its maintained fork
   `nvimtools/none-ls.nvim` (same API, `require("null-ls")`).
-- `lazy-lock.json` was carried over from the old lock file for reference only;
-  it will be rewritten by `lazy.nvim` after the first `:Lazy sync`/install since
-  the plugin set changed slightly.
-- `mason-lspconfig.ensure_installed` is empty — install servers per-project via
-  `:Mason` or add them there.
-- Not tested — please open `nvim` and debug/tweak as needed.
+- `neodev.nvim` is replaced by `folke/lazydev.nvim`.
+- `nvim-treesitter` is pinned to its `master` branch; the new `main` branch is an
+  incompatible rewrite.

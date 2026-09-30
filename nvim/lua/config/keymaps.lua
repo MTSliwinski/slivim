@@ -2,10 +2,10 @@
 local map = vim.keymap.set
 
 -- ===== User's custom keymaps (from lvim/config.lua) =====
-map("n", "|", ":vsplit<CR>", { desc = "Vertical split" })
-map("n", "\\", ":split<CR>", { desc = "Horizontal split" })
-map("n", "gt", ":BufferLineCycleNext<CR>", { desc = "Next buffer" })
-map("n", "gT", ":BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
+map("n", "|", "<cmd>vsplit<CR>", { desc = "Vertical split" })
+map("n", "\\", "<cmd>split<CR>", { desc = "Horizontal split" })
+map("n", "gt", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+map("n", "gT", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
 
 -- ===== LunarVim-style default keymaps =====
 
@@ -16,12 +16,12 @@ map("n", "<C-k>", "<C-w>k", { desc = "Window up" })
 map("n", "<C-l>", "<C-w>l", { desc = "Window right" })
 
 -- Buffer navigation (in addition to user's gt/gT)
-map("n", "<S-l>", ":BufferLineCycleNext<CR>", { desc = "Next buffer" })
-map("n", "<S-h>", ":BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
-map("n", "<leader>c", ":bdelete<CR>", { desc = "Close buffer" })
+map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
+map("n", "<leader>c", "<cmd>bdelete<CR>", { desc = "Close buffer" })
 
 -- File explorer
-map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
+map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
 
 -- Telescope
 map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find files" })
@@ -30,15 +30,14 @@ map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Find buffers" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help tags" })
 map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Recent files" })
 
--- LSP (attached globally; harmless if no LSP client active)
-map("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
-map("n", "gr", vim.lsp.buf.references, { desc = "Goto references" })
-map("n", "K", vim.lsp.buf.hover, { desc = "Hover docs" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+-- Diagnostics (LSP keymaps are buffer-local, set on LspAttach in lua/plugins/lsp.lua)
 map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Line diagnostics" })
-map("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
-map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+map("n", "[d", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "Prev diagnostic" })
+map("n", "]d", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "Next diagnostic" })
 
 -- Terminal (LunarVim default floating terminal toggle)
 map("n", "<C-\\>", "<cmd>ToggleTerm<CR>", { desc = "Toggle terminal" })

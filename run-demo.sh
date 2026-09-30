@@ -5,9 +5,9 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-IMAGE_NAME="vim-config-nvim-demo"
+IMAGE_NAME="slivim-demo"
 
-echo "==> Building image '${IMAGE_NAME}' from Dockerfile (Ubuntu 25.04 + nvim config)..."
+echo "==> Building image '${IMAGE_NAME}' from Dockerfile (Ubuntu 24.04 + nvim config)..."
 docker build -t "${IMAGE_NAME}" .
 
 echo "==> Starting demo container..."
